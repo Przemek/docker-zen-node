@@ -1,0 +1,18 @@
+#DO NOT go through this instruction before the blocks on your node are synchronized
+
+#Transfer funds from the node t-address to two z-addresses
+#to charge the node's balance for challenges using the following commands.
+
+#Enter bash of the zen-node container:
+#docker exec -it zen-node bash
+
+#Issue the transfer:
+#gosu user zen-cli z_sendmany $(gosu user zen-cli listaddresses | jq -r '.[1]') '[{"address": "'$(gosu user zen-cli z_getnewaddress)'", "amount": 0.0249},{"address": "'$(gosu user zen-cli z_getnewaddress)'", "amount": 0.0249}]'
+
+#To exit the bash of the container without closing it, press:
+#Ctrl+P
+#followed by:
+#Ctrl+Q
+
+#To start watching the balances:
+#watch -n 10 docker exec zen-node gosu user zen-cli z_gettotalbalance

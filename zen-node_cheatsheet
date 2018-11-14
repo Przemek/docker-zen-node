@@ -1,0 +1,12 @@
+#Zen-node container cheat sheet
+
+#To enter bash of the zen-node container
+#docker exec -it zen-node bash
+
+#To exit bash of the zen-node container without closing it:
+#Ctrl+P
+#followed by:
+#Ctrl+Q
+
+#To track zen-secnodetracker logs
+#watch -n 2 docker logs zen-secnodetracker

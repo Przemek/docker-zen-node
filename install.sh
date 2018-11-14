@@ -57,6 +57,8 @@ print_status "Populating apt-get cache..."
 apt-get update
 
 print_status "Installing packages required for setup..."
+apt-get install -y jq
+apt-get install -y software-properties-common
 apt-get install -y docker.io apt-transport-https lsb-release curl fail2ban unattended-upgrades ufw dnsutils > /dev/null 2>&1
 
 systemctl enable docker
@@ -167,7 +169,7 @@ cat << EOF > /mnt/zen/secnode/config.json
   "fqdn": "$fqdn",
   "ipv": "4",
   "region": "$region",
-  "home": "ts1.$region",
+  "home": "${servers}2.$region",
   "category": "none"
  }
 }
@@ -242,16 +244,9 @@ do
   sleep 30
 done
 
-if [[ $(docker exec -it zen-node /usr/local/bin/gosu user zen-cli z_listaddresses | wc -l) -eq 2 ]]; then
-  print_status "Generating shield address for node... you will need to send 1 ZEN to this address:"
-  docker exec -it zen-node /usr/local/bin/gosu user zen-cli z_getnewaddress
-
-  print_status "Restarting secnodetracker"
-  systemctl restart zen-secnodetracker
-else
-  print_status "Node already has shield address... you will need to send 1 ZEN to this address:"
-  docker exec -it zen-node /usr/local/bin/gosu user zen-cli z_listaddresses
-fi
+print_status "Send 0.05 ZEN to this address. Once the blocks are up to date, transfer this amount to challenge z-addresses"
+docker exec -it zen-node /usr/local/bin/gosu user zen-cli getnewaddress > /dev/null
+docker exec -it zen-node /usr/local/bin/gosu user zen-cli listaddresses | jq -r '.[1]'
 
 print_status "Install Finished"
 echo "Please wait until the blocks are up to date..."
