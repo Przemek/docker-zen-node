@@ -244,8 +244,11 @@ do
   sleep 30
 done
 
+if [[ $(docker exec -it zen-node /usr/local/bin/gosu user zen-cli listaddresses | wc -l) -eq 3 ]]; then
+  print_status "Generating t-address for node..."
+  docker exec -it zen-node /usr/local/bin/gosu user zen-cli getnewaddress > /dev/null
+fi
 print_status "Send 0.05 ZEN to this address. Once the blocks are up to date, transfer this amount to challenge z-addresses"
-docker exec -it zen-node /usr/local/bin/gosu user zen-cli getnewaddress > /dev/null
 docker exec -it zen-node /usr/local/bin/gosu user zen-cli listaddresses | jq -r '.[1]'
 
 print_status "Install Finished"
