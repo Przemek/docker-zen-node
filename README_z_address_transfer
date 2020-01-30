@@ -6,8 +6,11 @@
 #Enter bash of the zen-node container:
 #docker exec -it zen-node bash
 
-#Issue the transfer:
+#Issue the initial transfer after first install:
 #gosu user zen-cli z_sendmany $(gosu user zen-cli listaddresses | jq -r '.[1]') '[{"address": "'$(gosu user zen-cli z_getnewaddress)'", "amount": 0.0249},{"address": "'$(gosu user zen-cli z_getnewaddress)'", "amount": 0.0249}]'
+
+#Issue a refill transfer after challenge balance is depleted:
+#gosu user zen-cli z_sendmany $(gosu user zen-cli listaddresses | jq -r '.[1]') '[{"address": "'$(gosu user zen-cli z_listaddresses | jq -r '.[0]')'", "amount": 0.0249},{"address": "'$(gosu user zen-cli z_listaddresses | jq -r '.[1]')'", "amount": 0.0249}]'
 
 #To exit the bash of the container without closing it, press:
 #Ctrl+P
